@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring-prometheus-demo
+  namespace: new-data
   labels:
     app: spring-prometheus-demo
 spec:
@@ -27,6 +28,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: spring-prometheus-demo-service
+  namespace: new-data
   labels:
     app: spring-prometheus-demo
 spec:
@@ -37,16 +39,3 @@ spec:
       name: http-traffic
       port: 8080
       targetPort: 8080
-
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: spring-prometheus-demo-service-monitor
-spec:
-  selector:
-    matchLabels:
-      app: spring-prometheus-demo
-  endpoints:
-  - port: http-traffic
-    path: "/actuator/prometheus"
